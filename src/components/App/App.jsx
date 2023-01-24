@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Searchbar } from './Searcbar/Searchbar';
-import { ImageGallery } from './ImageGallery/ImageGallery';
-import {Button} from './Button/Button';
+import { Searchbar } from '../Searcbar/Searchbar';
+import { ImageGallery } from '../ImageGallery/ImageGallery';
+import {Button} from '../Button/Button';
 import { fetchImages } from 'services/api';
+import { Loader } from '../Loader/Loader';
+import {Container} from './App.styled';
 
 export class App extends Component {
   state = {
@@ -38,11 +40,12 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <Searchbar onSubmit={this.onSearchSubmit} />
         <ImageGallery gallery={this.state.gallery} />
         {this.state.gallery.length > 0 && <Button onLoadMore = {this.onLoadMore}/>}
-      </div>
+{this.state.status === 'pending' && <Loader/>}
+      </Container>
     );
   }
 }

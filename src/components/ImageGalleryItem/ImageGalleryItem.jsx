@@ -1,21 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {ImageCard, CardImage} from './ImageGalleryItem.styled';
-export const ImageGalleryItem = ({id, webformatURL ,largeImageURL}) => {
+import React, { Component } from 'react';
 
-    // console.log(webformatURL);
-return (
+import { ImageCard, CardImage } from './ImageGalleryItem.styled';
+import { Modal } from 'components/Modal/Modal';
 
-    <ImageCard key = {id}>
-  <CardImage src={webformatURL} alt="" />
-</ImageCard>
-);
-
-}
-
-ImageGalleryItem.propTypes= {
-    id: PropTypes.number.isRequired,
-    webformatURL:PropTypes.string.isRequired,
-    largeImageURL: PropTypes.string.isRequired,
-
+export class ImageGalleryItem extends Component {
+  state = {
+    isModalOpen: false,
   };
+
+  // console.log(webformatURL);
+
+  openModal = () => this.setState({ isModalOpen: true });
+  closeModal = () => this.setState({ isModalOpen: false });
+
+  render() {
+    const { id, webformatURL, largeImageURL } = this.props;
+    const { isModalOpen } = this.state;
+
+    return (
+      <div>
+        <ImageCard key={id} onClick={this.openModal}>
+          <CardImage src={webformatURL} alt="" />
+        </ImageCard>
+        {isModalOpen && (
+          <Modal largeImageURL={largeImageURL} onClose={this.closeModal} />
+        )}
+      </div>
+    );
+  }
+}
