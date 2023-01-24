@@ -1,22 +1,25 @@
 import React from 'react';
-import {ImageGalleryItem} from '../ImageGalleryItem/ImageGalleryItem'
+import {ImageGalleryItem} from '../ImageGalleryItem/ImageGalleryItem';
+import {GalleryList} from './ImageGallery.styled';
 
-export const ImageGallery = ({ gallery}) => {
-
+export const ImageGallery = ({gallery}) => {
+    // console.log(gallery);
 return (
 
-    <ul className="gallery">
+    <GalleryList className="gallery">
  
 {gallery.map(({id, webformatURL ,largeImageURL}) => (
+     
+   
         <ImageGalleryItem
           key={id}
-          url = {webformatURL}
+          webformatURL = {webformatURL}
           id={id}
           largeImageURL = {largeImageURL}
           
         />
       ))}
-    </ul>
+    </GalleryList>
 );
 
 }

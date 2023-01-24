@@ -5,8 +5,8 @@ import {FormSearch, ButtonLabel, SearchbarStyled, Button, Input} from './Searchb
 export const Searchbar = ({ onSubmit }) => {
 
   const handleSubmit = async (searchQuery, actions) => {
-    await onSubmit(searchQuery);
-    
+    await onSubmit(searchQuery.searchQuery);
+    // console.log(searchQuery.searchQuery);
     actions.setSubmitting(false);
     actions.resetForm();
   };
