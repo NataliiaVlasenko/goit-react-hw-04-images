@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Searchbar } from './Searcbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-
+import {Button} from './Button/Button';
 import { fetchImages } from 'services/api';
 
 export class App extends Component {
@@ -10,40 +10,38 @@ export class App extends Component {
     page: 1,
     gallery: [],
     error: false,
-   status: 'idle',
+    status: 'idle',
   };
 
   onSearchSubmit = searchQuery => {
-    console.log(searchQuery);
-    this.setState({ searchQuery, page: 1, gallery: [] })
-  }
-  
+    this.setState({ searchQuery, page: 1, gallery: [] });
+  };
+  onLoadMore =  () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
+
   componentDidUpdate(_, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
+    if (prevState.page !== this.state.page ||prevState.searchQuery !== this.state.searchQuery) {
+      this.setState({ status: 'pending' });
 
-      this.setState({ status: 'pending'});
-
-      fetchImages(this.state.searchQuery)
-
-        .then(response => {
-          this.setState(prevState => 
-            ({
-            gallery: [...prevState.gallery, ...response],
-            status: 'resolved',
-                    }))}
-          );
+      fetchImages(this.state.searchQuery, this.state.page).then(response => {
+        this.setState(prevState => ({
+          gallery: [...prevState.gallery, ...response],
+          status: 'resolved',
+          
+        }));
+      });
     }
-
-
   }
-
-  
 
   render() {
     return (
       <div>
         <Searchbar onSubmit={this.onSearchSubmit} />
         <ImageGallery gallery={this.state.gallery} />
+        {this.state.gallery.length > 0 && <Button onLoadMore = {this.onLoadMore}/>}
       </div>
     );
   }

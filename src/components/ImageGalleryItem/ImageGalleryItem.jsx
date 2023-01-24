@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {ImageCard, CardImage} from './ImageGalleryItem.styled';
 export const ImageGalleryItem = ({id, webformatURL ,largeImageURL}) => {
 
@@ -11,3 +12,10 @@ return (
 );
 
 }
+
+ImageGalleryItem.propTypes= {
+    id: PropTypes.number.isRequired,
+    webformatURL:PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+
+  };
