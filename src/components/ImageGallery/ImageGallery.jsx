@@ -1,25 +1,18 @@
 import React from 'react';
-import {ImageGalleryItem} from '../ImageGalleryItem/ImageGalleryItem';
-import {GalleryList} from './ImageGallery.styled';
+import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+import { GalleryList } from './ImageGallery.styled';
 
-export const ImageGallery = ({gallery}) => {
-    // console.log(gallery);
-return (
-
+export const ImageGallery = ({ gallery }) => {
+  return (
     <GalleryList className="gallery">
- 
-{gallery.map(({id, webformatURL ,largeImageURL}) => (
-     
-   
+      {gallery.map(({ id, webformatURL, largeImageURL }) => (
         <ImageGalleryItem
           key={id}
-          webformatURL = {webformatURL}
+          webformatURL={webformatURL}
           id={id}
-          largeImageURL = {largeImageURL}
-          
+          largeImageURL={largeImageURL}
         />
       ))}
     </GalleryList>
-);
-
-}
+  );
+};

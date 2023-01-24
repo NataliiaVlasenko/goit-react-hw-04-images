@@ -27,3 +27,4 @@ export class Modal extends Component {
   }
  
 }
+

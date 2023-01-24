@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
+import { FaSearchengin } from 'react-icons/fa';
 import {
   FormSearch,
   ButtonLabel,
@@ -21,7 +22,9 @@ export const Searchbar = ({ onSubmit }) => {
       <Formik initialValues={{ searchQuery: '' }} onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <FormSearch>
+            
             <Button type="submit" disabled={isSubmitting}>
+            <FaSearchengin size={30} />
               <ButtonLabel>Search</ButtonLabel>
             </Button>
 
