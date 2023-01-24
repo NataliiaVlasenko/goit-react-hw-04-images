@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { FaSearchengin } from 'react-icons/fa';
+import { BsSearch } from "react-icons/bs";
+import {  toast } from 'react-toastify';
+
 import {
   FormSearch,
   ButtonLabel,
@@ -15,6 +17,11 @@ export const Searchbar = ({ onSubmit }) => {
 
     actions.setSubmitting(false);
     actions.resetForm();
+    if (searchQuery.searchQuery === '') {
+      return toast.warn('Plese enter smth', {
+        theme: 'colored',
+              });
+    }
   };
 
   return (
@@ -24,7 +31,7 @@ export const Searchbar = ({ onSubmit }) => {
           <FormSearch>
             
             <Button type="submit" disabled={isSubmitting}>
-            <FaSearchengin size={30} />
+            < BsSearch  size={30} />
               <ButtonLabel>Search</ButtonLabel>
             </Button>
 

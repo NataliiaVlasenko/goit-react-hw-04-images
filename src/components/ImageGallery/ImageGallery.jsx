@@ -16,3 +16,5 @@ export const ImageGallery = ({ gallery }) => {
     </GalleryList>
   );
 };
+
+
