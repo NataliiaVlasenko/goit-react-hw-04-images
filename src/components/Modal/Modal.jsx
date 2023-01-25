@@ -3,28 +3,27 @@ import { Overlay, ModalImg } from './Modal.styled';
 
 export class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.handleEsc);
+    window.addEventListener('keydown', this.handleClose);
   }
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleEsc);
+    window.removeEventListener('keydown', this.handleClose);
   }
 
-  handleEsc = event => {
-    if (event.code === 'Escape') {
+  handleClose = event => {
+    if (event.code === 'Escape' || (event.currentTarget === event.target)) {
       this.props.onClose();
     }
   };
 
+ 
   render() {
-    const { largeImageURL, onClose } = this.props;
+    const { largeImageURL} = this.props;
     return (
-      <Overlay onClick={onClose}>
+      <Overlay onClick={this.handleClose}>
         <ModalImg>
           <img src={largeImageURL} alt="" />
         </ModalImg>
       </Overlay>
     );
   }
- 
 }
-
