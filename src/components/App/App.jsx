@@ -18,7 +18,13 @@ export class App extends Component {
   };
 
   onSearchSubmit = searchQuery => {
-    this.setState({ searchQuery, page: 1, gallery: [] });
+        searchQuery !== this.state.searchQuery
+    ? this.setState({ searchQuery, page: 1, gallery: [] })
+    : toast.warn(`You have already tried this search`,
+     { theme: 'colored',
+      }
+    );
+
   };
   onLoadMore = () => {
     this.setState(prevState => ({
@@ -56,15 +62,17 @@ export class App extends Component {
   }
 
   render() {
+
+    const {gallery, status} = this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.onSearchSubmit} />
-        <ImageGallery gallery={this.state.gallery} />
+        <ImageGallery gallery={gallery} />
 
-        {this.state.gallery.length > 0 && (
+        {(gallery.length > 0 && gallery.length >=12) && (
           <Button onLoadMore={this.onLoadMore} />
         )}
-        {this.state.status === 'pending' && <Loader />}
+        {status === 'pending' && <Loader />}
 
         <ToastContainer autoClose={3000} />
       </Container>
