@@ -15,11 +15,12 @@ export class App extends Component {
     gallery: [],
     error: false,
     status: 'idle',
+    loadMoreButton: false,
   };
 
   onSearchSubmit = searchQuery => {
         searchQuery !== this.state.searchQuery
-    ? this.setState({ searchQuery, page: 1, gallery: [] })
+    ? this.setState({ searchQuery, page: 1, gallery: [], loadMoreButton: true,})
     : toast.warn(`You have already tried this search`,
      { theme: 'colored',
       }
@@ -39,22 +40,30 @@ export class App extends Component {
     const prevSearchQuery = prevState.searchQuery;
 
     if (prevPage !== page || prevSearchQuery !== searchQuery) {
-      this.setState({ status: 'pending' });
+      this.setState({ status: 'pending', loadMoreButton: false, });
       fetchImages(searchQuery, page)
         .then(response => {
           this.setState(prevState => ({
             gallery: [...prevState.gallery, ...response],
+            loadMoreButton: true,
             status: 'resolved',
+            
           }));
 
           if (response.length === 0) {
-            this.setState({ gallery: [] });
+            this.setState({ gallery: [],  loadMoreButton: false, });
             return toast.error(
               `Sorry, it's nothing connected with ${searchQuery}`,
               {
                 theme: 'colored',
               }
             );
+          }
+
+          if (response.length <= 11) {
+            this.setState({ loadMoreButton: false });
+          }else {
+            this.setState({ loadMoreButton: true });
           }
         })
         .catch(error => this.setState({ error, status: 'rejected' }));
@@ -63,15 +72,17 @@ export class App extends Component {
 
   render() {
 
-    const {gallery, status} = this.state;
+    const {gallery, status, loadMoreButton} = this.state;
+
+
     return (
       <Container>
         <Searchbar onSubmit={this.onSearchSubmit} />
         <ImageGallery gallery={gallery} />
 
-        {(gallery.length > 0 && gallery.length >12) && (
-          <Button onLoadMore={this.onLoadMore} />
-        )}
+        {loadMoreButton && <Button onLoadMore={this.onLoadMore} />
+        }
+
         {status === 'pending' && <Loader />}
 
         <ToastContainer autoClose={3000} />
