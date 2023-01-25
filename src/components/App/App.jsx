@@ -69,7 +69,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.onSearchSubmit} />
         <ImageGallery gallery={gallery} />
 
-        {(gallery.length > 0 && gallery.length >=12) && (
+        {(gallery.length > 0 && gallery.length >12) && (
           <Button onLoadMore={this.onLoadMore} />
         )}
         {status === 'pending' && <Loader />}
