@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { BsSearch } from "react-icons/bs";
-import {  toast } from 'react-toastify';
+import { BsSearch } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 
 import {
   FormSearch,
@@ -13,13 +13,13 @@ import {
 
 export const Searchbar = ({ onSubmit }) => {
   const handleSubmit = async (searchQuery, actions) => {
-        await onSubmit(searchQuery.searchQuery);
+    await onSubmit(searchQuery.searchQuery);
     actions.setSubmitting(false);
     actions.resetForm();
     if (searchQuery.searchQuery === '') {
       return toast.warn('Plese enter smth', {
         theme: 'colored',
-              });
+      });
     }
   };
 
@@ -28,9 +28,8 @@ export const Searchbar = ({ onSubmit }) => {
       <Formik initialValues={{ searchQuery: '' }} onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <FormSearch>
-            
             <Button type="submit" disabled={isSubmitting}>
-            < BsSearch  size={30} />
+              <BsSearch size={30} />
               <ButtonLabel>Search</ButtonLabel>
             </Button>
 
