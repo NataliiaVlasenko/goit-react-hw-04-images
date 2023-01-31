@@ -13,8 +13,7 @@ import {
 
 export const Searchbar = ({ onSubmit }) => {
   const handleSubmit = async (searchQuery, actions) => {
-    await onSubmit(searchQuery.searchQuery);
-
+        await onSubmit(searchQuery.searchQuery);
     actions.setSubmitting(false);
     actions.resetForm();
     if (searchQuery.searchQuery === '') {

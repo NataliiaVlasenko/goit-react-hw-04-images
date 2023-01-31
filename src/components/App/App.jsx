@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Searchbar } from '../Searcbar/Searchbar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { Button } from '../Button/Button';
@@ -8,79 +8,74 @@ import { Container } from './App.styled';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export class App extends Component {
-  state = {
-    searchQuery: '',
-    page: 1,
-    gallery: [],
-    error: false,
-    status: 'idle',
-    loadMoreButton: false,
-  };
+export function App () {
 
-  onSearchSubmit = searchQuery => {
-        searchQuery !== this.state.searchQuery
-    ? this.setState({ searchQuery, page: 1, gallery: [], loadMoreButton: true,})
-    : toast.warn(`You have already tried this search`,
-     { theme: 'colored',
-      }
-    );
+   const [gallery, setGallery] = useState([]);
+   const [status, setStatus] = useState('idle');
+   const [error, setError] = useState(false);
+   const [searchQuery, setSearchQuery] = useState('');
+   const [loadMoreButton, setloadMoreButton] = useState(false);
+   const [page, setPage] = useState(1);
 
-  };
-  onLoadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-    this.setState({ status: 'pending' });
-  };
 
-  componentDidUpdate(_, prevState) {
-    const { searchQuery, page} = this.state;
-    const prevPage = prevState.page;
-    const prevSearchQuery = prevState.searchQuery;
 
-    if (prevPage !== page || prevSearchQuery !== searchQuery) {
-      this.setState({ status: 'pending', loadMoreButton: false, });
-      fetchImages(searchQuery, page)
-        .then(response => {
-          this.setState(prevState => ({
-            gallery: [...prevState.gallery, ...response],
-            loadMoreButton: true,
-            status: 'resolved',
-            
-          }));
-
-          if (response.length === 0) {
-            this.setState({ gallery: [],  loadMoreButton: false, });
-            return toast.error(
-              `Sorry, it's nothing connected with ${searchQuery}`,
-              {
-                theme: 'colored',
-              }
-            );
-          }
-
-          if (response.length <= 11) {
-            this.setState({ loadMoreButton: false });
-          }else {
-            this.setState({ loadMoreButton: true });
-          }
-        })
-        .catch(error => this.setState({ error, status: 'rejected' }));
+  useEffect(() => {
+    if (searchQuery === '') {
+      setloadMoreButton(false);
+      return ;
     }
-  }
+    setStatus('pending');
+    setloadMoreButton(false);
+    fetchImages(searchQuery, page)
+      .then(response => {
+        setGallery(prevState => [...prevState, ...response]);
+        setStatus('resolved');
+        setloadMoreButton(true);
+        if (response.length === 0) {
 
-  render() {
+          setGallery([]);
+          setloadMoreButton(false);
+          return toast.error('it`s nothing have found, try again', {
+            theme: 'colored',
+                  });
+          }
+           
+        
+        if (response.length <= 11) {
+          setloadMoreButton(false);
+                  } else {
+          setloadMoreButton(true);
+        }
+      })
+      .catch(error => {
+        setError(error);
+        setStatus('rejected');
+      });
+  }, [page, searchQuery]);
+   
+   
 
-    const {gallery, status, loadMoreButton} = this.state;
+  const onLoadMore = () => {
 
+    setPage(prevPage => prevPage +1)
+    setStatus('pending');
+  };
+
+  const onSearchSubmit = value => {
+    if (searchQuery === value) {
+      return;
+    }
+    setSearchQuery(value);
+    setPage(1);
+    setGallery([]);
+  };
 
     return (
       <Container>
-        <Searchbar onSubmit={this.onSearchSubmit} />
+        <Searchbar onSubmit={onSearchSubmit} />
         <ImageGallery gallery={gallery} />
 
-        {loadMoreButton && <Button onLoadMore={this.onLoadMore} />
+        {loadMoreButton && <Button onLoadMore={onLoadMore} />
         }
 
         {status === 'pending' && <Loader />}
@@ -88,5 +83,6 @@ export class App extends Component {
         <ToastContainer autoClose={3000} />
       </Container>
     );
-  }
+  
 }
+
