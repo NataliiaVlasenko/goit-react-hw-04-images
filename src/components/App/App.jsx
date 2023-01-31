@@ -46,7 +46,7 @@ export function App() {
         setError(error);
         setStatus('rejected');
       });
-  }, [page, searchQuery]);
+  },[page, searchQuery, error]);
 
   const onLoadMore = () => {
     setStatus('pending');
