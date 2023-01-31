@@ -51,7 +51,6 @@ export function App() {
   const onLoadMore = () => {
     setStatus('pending');
     setPage(prevPage => prevPage + 1);
-    
   };
 
   const onSearchSubmit = value => {
