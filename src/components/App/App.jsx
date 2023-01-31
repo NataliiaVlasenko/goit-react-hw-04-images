@@ -49,8 +49,9 @@ export function App() {
   }, [page, searchQuery]);
 
   const onLoadMore = () => {
-    setPage(prevPage => prevPage + 1);
     setStatus('pending');
+    setPage(prevPage => prevPage + 1);
+    
   };
 
   const onSearchSubmit = value => {
