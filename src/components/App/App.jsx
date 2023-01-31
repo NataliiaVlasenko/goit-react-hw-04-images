@@ -8,21 +8,18 @@ import { Container } from './App.styled';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export function App () {
-
-   const [gallery, setGallery] = useState([]);
-   const [status, setStatus] = useState('idle');
-   const [error, setError] = useState(false);
-   const [searchQuery, setSearchQuery] = useState('');
-   const [loadMoreButton, setloadMoreButton] = useState(false);
-   const [page, setPage] = useState(1);
-
-
+export function App() {
+  const [gallery, setGallery] = useState([]);
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loadMoreButton, setloadMoreButton] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (searchQuery === '') {
       setloadMoreButton(false);
-      return ;
+      return;
     }
     setStatus('pending');
     setloadMoreButton(false);
@@ -32,18 +29,16 @@ export function App () {
         setStatus('resolved');
         setloadMoreButton(true);
         if (response.length === 0) {
-
           setGallery([]);
           setloadMoreButton(false);
           return toast.error('it`s nothing have found, try again', {
             theme: 'colored',
-                  });
-          }
-           
-        
+          });
+        }
+
         if (response.length <= 11) {
           setloadMoreButton(false);
-                  } else {
+        } else {
           setloadMoreButton(true);
         }
       })
@@ -52,12 +47,9 @@ export function App () {
         setStatus('rejected');
       });
   }, [page, searchQuery]);
-   
-   
 
   const onLoadMore = () => {
-
-    setPage(prevPage => prevPage +1)
+    setPage(prevPage => prevPage + 1);
     setStatus('pending');
   };
 
@@ -70,19 +62,16 @@ export function App () {
     setGallery([]);
   };
 
-    return (
-      <Container>
-        <Searchbar onSubmit={onSearchSubmit} />
-        <ImageGallery gallery={gallery} />
+  return (
+    <Container>
+      <Searchbar onSubmit={onSearchSubmit} />
+      <ImageGallery gallery={gallery} />
 
-        {loadMoreButton && <Button onLoadMore={onLoadMore} />
-        }
+      {loadMoreButton && <Button onLoadMore={onLoadMore} />}
 
-        {status === 'pending' && <Loader />}
+      {status === 'pending' && <Loader />}
 
-        <ToastContainer autoClose={3000} />
-      </Container>
-    );
-  
+      <ToastContainer autoClose={3000} />
+    </Container>
+  );
 }
-
